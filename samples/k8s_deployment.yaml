@@ -1,0 +1,33 @@
+# k8s/configmap-binary-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: binary-format-config
+data:
+  serialization-config.yaml: |
+    default_format: messagepack
+    fallback_enabled: true
+    kafka:
+      format: messagepack
+      compression: lz4
+    redis:
+      format: messagepack
+      pipeline_size: 100
+    websocket:
+      format: messagepack
+      max_frame_size: 1048576
+      
+# Deployment with binary format support
+spec:
+  template:
+    spec:
+      containers:
+      - name: microservice
+        env:
+        - name: SERIALIZATION_FORMAT
+          valueFrom:
+            configMapKeyRef:
+              name: binary-format-config
+              key: default_format
+        - name: ENABLE_BINARY_FALLBACK
+          value: "true"
