@@ -1,0 +1,17 @@
+graph TB
+    CA[Client Apps] -->|JSON/HTTP| AG[API Gateway]
+    AG -->|JSON| KC[Kafka Cluster]
+
+    MSA[Microservice A] -->|JSON/Kafka| KC
+    KC -->|JSON/HTTP| MSB[Microservice B]
+
+    MSA -->|JSON| RC[Redis Cluster<br/>JSON Storage]
+    KC -->|JSON| PG[PostgreSQL<br/>JSONB Columns]
+    MSB -->|JSON| WS[WebSocket<br/>JSON Frames]
+
+    classDef jsonFormat fill:#ffcccc,stroke:#ff6666,stroke-width:2px
+    classDef infrastructure fill:#cce5ff,stroke:#0066cc,stroke-width:2px
+    classDef services fill:#ccffcc,stroke:#00cc00,stroke-width:2px
+
+    class CA,AG,MSA,MSB services
+    class KC,RC,PG,WS infrastructure

@@ -1,0 +1,42 @@
+flowchart TD
+    subgraph "Phase 1: MessagePack Implementation"
+        P1A[Implement MessagePack<br/>in shared libraries]
+        P1B[Deploy to high-traffic<br/>Kafka services]
+        P1C[Configure Redis<br/>binary storage]
+    end
+
+    subgraph "Phase 2: Dual-Format Support"
+        P2A[Enable feature flags<br/>for format selection]
+        P2B[Implement monitoring<br/>and metrics]
+        P2C[Gradual traffic<br/>shifting]
+    end
+
+    subgraph "Phase 3: Protobuf Integration"
+        P3A[Setup Schema Registry<br/>for Protobuf]
+        P3B[Migrate Java services<br/>to Protobuf]
+        P3C[Implement gRPC<br/>communication]
+    end
+
+    subgraph "Phase 4: Migration Completion"
+        P4A[Complete service-by-service<br/>cutover]
+        P4B[Optimize binary<br/>configurations]
+        P4C[Maintain JSON for<br/>external APIs]
+    end
+
+    P1A --> P1B --> P1C
+    P1C --> P2A
+    P2A --> P2B --> P2C
+    P2C --> P3A
+    P3A --> P3B --> P3C
+    P3C --> P4A
+    P4A --> P4B --> P4C
+
+    classDef phase1 fill:#ffebcd,stroke:#daa520,stroke-width:2px
+    classDef phase2 fill:#e0f6ff,stroke:#0066cc,stroke-width:2px
+    classDef phase3 fill:#f0fff0,stroke:#32cd32,stroke-width:2px
+    classDef phase4 fill:#ffefd5,stroke:#ff8c00,stroke-width:2px
+
+    class P1A,P1B,P1C phase1
+    class P2A,P2B,P2C phase2
+    class P3A,P3B,P3C phase3
+    class P4A,P4B,P4C phase4

@@ -1,0 +1,33 @@
+graph TB
+    CA[Client Apps] -->|JSON/HTTP| AG[API Gateway]
+    AG -->|JSON → Binary| KC[Kafka Cluster<br/>Schema Registry]
+
+    MSA[Microservice A<br/>MessagePack] -->|MessagePack| KC
+    KC -->|Protobuf/gRPC| MSB[Microservice B<br/>Protobuf]
+
+    MSA -->|MessagePack| RC[Redis Cluster<br/>Binary BYTEA]
+    KC -->|Binary| PG[PostgreSQL<br/>BYTEA Columns]
+    MSB -->|Protobuf| WS[WebSocket<br/>Binary Frames]
+
+    classDef binaryFormat fill:#ccffcc,stroke:#00cc00,stroke-width:2px
+    classDef jsonFormat fill:#ffcccc,stroke:#ff6666,stroke-width:2px
+    classDef infrastructure fill:#cce5ff,stroke:#0066cc,stroke-width:2px
+    classDef services fill:#e6ccff,stroke:#9933cc,stroke-width:2px
+
+    class CA services
+    class AG services
+    class MSA,MSB binaryFormat
+    class KC,RC,PG,WS infrastructure
+
+%% Add legend
+    subgraph Legend
+        LJ[JSON Format]
+        LB[Binary Format]
+        LI[Infrastructure]
+        LS[Services]
+    end
+
+    class LJ jsonFormat
+    class LB binaryFormat
+    class LI infrastructure
+    class LS services
